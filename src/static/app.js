@@ -59,14 +59,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const result = await response.json();
 
       if (response.ok) {
-        messageDiv.textContent = result.message;
+        messageDiv.textContent = `${result.message} Refreshing activity list...`;
         messageDiv.className = "success";
         signupForm.reset();
 
-        // Refresh the page after a successful signup
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        // Reload activity data after successful signup
+        await fetchActivities();
       } else {
         messageDiv.textContent = result.detail || "An error occurred";
         messageDiv.className = "error";
