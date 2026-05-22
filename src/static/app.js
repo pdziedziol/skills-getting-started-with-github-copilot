@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Clear loading message
       activitiesList.innerHTML = "";
+      activitySelect.innerHTML = '<option value="">-- Select an activity --</option>';
 
       // Populate activities list
       Object.entries(activities).forEach(([name, details]) => {
@@ -59,12 +60,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const result = await response.json();
 
       if (response.ok) {
-        messageDiv.textContent = `${result.message} Refreshing activity list...`;
+        messageDiv.textContent = `${result.message} Reloading page...`;
         messageDiv.className = "success";
         signupForm.reset();
 
-        // Reload activity data after successful signup
-        await fetchActivities();
+        // Reload the full page after successful signup
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
       } else {
         messageDiv.textContent = result.detail || "An error occurred";
         messageDiv.className = "error";
