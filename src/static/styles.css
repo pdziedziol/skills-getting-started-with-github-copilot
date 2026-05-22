@@ -108,6 +108,37 @@ button:hover {
   background-color: #3949ab;
 }
 
+button.secondary {
+  background-color: #4a148c;
+  margin-top: 15px;
+}
+
+button.secondary:hover {
+  background-color: #6a1b9a;
+}
+
+.summary-list {
+  margin-top: 20px;
+}
+
+.summary-item {
+  margin-bottom: 16px;
+  padding: 14px;
+  border: 1px solid #d1c4e9;
+  border-radius: 5px;
+  background-color: #faf5ff;
+}
+
+.summary-item h4 {
+  margin-bottom: 10px;
+  color: #4a148c;
+}
+
+.summary-item ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
 .message {
   margin-top: 20px;
   padding: 10px;

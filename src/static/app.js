@@ -2,13 +2,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const activitiesList = document.getElementById("activities-list");
   const activitySelect = document.getElementById("activity");
   const signupForm = document.getElementById("signup-form");
+  const summaryButton = document.getElementById("summary-button");
+  const summaryContainer = document.getElementById("summary-container");
   const messageDiv = document.getElementById("message");
+  let cachedActivities = {};
 
   // Function to fetch activities from API
   async function fetchActivities() {
     try {
       const response = await fetch("/activities");
       const activities = await response.json();
+      cachedActivities = activities;
 
       // Clear loading message
       activitiesList.innerHTML = "";
@@ -41,6 +45,52 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Error fetching activities:", error);
     }
   }
+
+  function renderSummary() {
+    summaryContainer.innerHTML = "";
+
+    if (!cachedActivities || Object.keys(cachedActivities).length === 0) {
+      summaryContainer.innerHTML = "<p>No activity data available for summary.</p>";
+      return;
+    }
+
+    const summaryList = document.createElement("div");
+    summaryList.className = "summary-list";
+
+    Object.entries(cachedActivities).forEach(([name, details]) => {
+      const activitySummary = document.createElement("div");
+      activitySummary.className = "summary-item";
+
+      const title = document.createElement("h4");
+      title.textContent = name;
+
+      const participantsList = document.createElement("ul");
+
+      if (details.participants.length > 0) {
+        details.participants.forEach((participant) => {
+          const listItem = document.createElement("li");
+          listItem.textContent = participant;
+          participantsList.appendChild(listItem);
+        });
+      } else {
+        const listItem = document.createElement("li");
+        listItem.textContent = "No participants signed up yet.";
+        participantsList.appendChild(listItem);
+      }
+
+      activitySummary.appendChild(title);
+      activitySummary.appendChild(participantsList);
+      summaryList.appendChild(activitySummary);
+    });
+
+    summaryContainer.appendChild(summaryList);
+  }
+
+  summaryButton.addEventListener("click", () => {
+    renderSummary();
+    const isHidden = summaryContainer.classList.toggle("hidden");
+    summaryButton.textContent = isHidden ? "Show Participant Summary" : "Hide Participant Summary";
+  });
 
   // Handle form submission
   signupForm.addEventListener("submit", async (event) => {
